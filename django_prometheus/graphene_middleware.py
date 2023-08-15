@@ -1,5 +1,5 @@
 from django_prometheus import middleware
-from graphene_django.filter import DjangoFilterConnectionField,
+from graphene_django.filter import DjangoFilterConnectionField
 
 """ This will hold arbtrary graphql resolvers by their resolver name while also grabbing existing metrics for Django."""
 class GrapheneMetrics(middleware.Metrics):
