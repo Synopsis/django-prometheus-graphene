@@ -5,10 +5,9 @@ from django_prometheus import middleware
 class GrapheneMetrics(middleware.Metrics):
 
     def __init__(self, *args, **kwargs):
-
+        super().__init__(*args, **kwargs)
         self.graphene_resolvers = { }  
 
-        super.__init__()
 
     def register_graphene_metric(self, metric_cls, name, documentation, labelnames=(), **kwargs):
     	graphene_metric = metric_cls(name, documentation, labelnames=labelnames, **kwargs)
