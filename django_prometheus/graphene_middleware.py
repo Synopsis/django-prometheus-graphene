@@ -32,9 +32,13 @@ class GrapheneMetricDjangoFilterConnectionField(DjangoFilterConnectionField):
 
 	@classmethod
 	def metric_name(cls, filterset_class, metric_suffix):
-		metric_name = filterset_class.__class__.__name__.split(".")[-1] 
+		print("filterset_class", filterset_class)
+
+		metric_name = filterset_class.__class__.__name__.split(".")[-1]  + metric_suffix
+
 		print("Metric Name:", metric_name)
-		return metric_name + metric_suffix
+		
+		return metric_name
 
 
 	def __init__(
@@ -65,10 +69,11 @@ class GrapheneMetricDjangoFilterConnectionField(DjangoFilterConnectionField):
 	@classmethod
 	def resolve_queryset(cls, connection, iterable, info, args, filtering_args, filterset_class):
 
+		metric_name = GrapheneMetricDjangoFilterConnectionField.metric_name(filterset_class, "_histogram")
+
 		result = super().resolve_queryset(connection, iterable, info, args, filtering_args, filterset_class)
 		print(filterset_class)
 
-		metric_name = GrapheneMetricDjangoFilterConnectionField.metric_name(filterset_class, "_histogram")
 
 		GrapheneMetrics.get_instance().get_graphene_metric( metric_name ).observe( len(result) )
 
