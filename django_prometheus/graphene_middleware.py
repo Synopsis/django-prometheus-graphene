@@ -1,4 +1,4 @@
-from middleware import Metrics, PrometheusBeforeMiddleware, PrometheusAfterMiddleware
+from . import Metrics, PrometheusBeforeMiddleware, PrometheusAfterMiddleware
 
 
 """ This will hold arbtrary graphql resolvers by their resolver name while also grabbing existing metrics for Django."""
