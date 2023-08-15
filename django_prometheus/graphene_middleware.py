@@ -30,6 +30,7 @@ class GraphenePrometheusAfterMiddleware(middleware.PrometheusAfterMiddleware):
 
 class GrapheneMetricDjangoFilterConnectionField(DjangoFilterConnectionField):
 
+	@classmethod
 	def metric_name(self, metric_suffix):
 		model_name = self.model.__class__.__name__.split(".")[-1] 
 		return model_name + metric_suffix
@@ -60,11 +61,14 @@ class GrapheneMetricDjangoFilterConnectionField(DjangoFilterConnectionField):
 		GrapheneMetrics.get_instance().register_graphene_metric(Histogram, metric_name, f"Total count of { metric_name } Resolved", namespace=NAMESPACE)
 
 
-
+	@classmethod
 	def resolve_queryset(cls, connection, iterable, info, args, filtering_args, filterset_class):
 
 		result = super().resolve_queryset(connection, iterable, info, args, filtering_args, filterset_class)
-
-		GrapheneMetrics.get_instance().get_graphene_metric( self.metric_name("_histogram") ).observe( len(result) )
+		print(filterset_class)
+		print(filtering_args)
+		print(args)
+		print(info)
+		# GrapheneMetrics.get_instance().get_graphene_metric( self.metric_name("_histogram") ).observe( len(result) )
 
 		return result
