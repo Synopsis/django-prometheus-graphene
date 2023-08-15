@@ -1,8 +1,8 @@
-from . import Metrics, PrometheusBeforeMiddleware, PrometheusAfterMiddleware
+from django_prometheus import middleware
 
 
 """ This will hold arbtrary graphql resolvers by their resolver name while also grabbing existing metrics for Django."""
-class GrapheneMetrics(Metrics):
+class GrapheneMetrics(middleware.Metrics):
 
     def __init__(self, *args, **kwargs):
 
@@ -19,10 +19,10 @@ class GrapheneMetrics(Metrics):
     	return self.graphene_resolvers[name]
 
 ''' Overload the metrics class our middleware uses'''
-class GraphenePrometheusBeforeMiddleware(PrometheusBeforeMiddleware):
+class GraphenePrometheusBeforeMiddleware(middleware.PrometheusBeforeMiddleware):
 	metrics_cls = GrapheneMetrics
 
 
 ''' Overload the metrics class our middleware uses'''
-class GraphenePrometheusAfterMiddleware(PrometheusAfterMiddleware):
+class GraphenePrometheusAfterMiddleware(middleware.PrometheusAfterMiddleware):
 	metrics_cls = GrapheneMetrics
