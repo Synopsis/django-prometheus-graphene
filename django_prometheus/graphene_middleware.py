@@ -34,10 +34,10 @@ class GrapheneMetricDjangoFilterConnectionField(DjangoFilterConnectionField):
 	def metric_name(cls, filterset_class, metric_suffix):
 		print("filterset_class", filterset_class)
 
-		metric_name = filterset_class.__class__.__name__.split(".")[-1]  + metric_suffix
+		metric_name = filterset_class.__name__.split(".")[-1]  + metric_suffix
 
 		print("Metric Name:", metric_name)
-		
+
 		return metric_name
 
 
