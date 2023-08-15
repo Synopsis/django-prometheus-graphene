@@ -68,8 +68,8 @@ class GrapheneMetricDjangoFilterConnectionField(DjangoFilterConnectionField):
 	def get_queryset_resolver(self):
 		metric_name = GrapheneMetricDjangoFilterConnectionField.metric_name(self.filterset_class, "_histogram")
 
-        result = super().get_queryset_resolver()
-        
+		result = super().get_queryset_resolver()
+		
 		GrapheneMetrics.get_instance().get_graphene_metric( metric_name ).observe( len(result) )
 		print("length of result:", len(result) )
 
