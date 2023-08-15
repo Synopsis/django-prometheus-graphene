@@ -30,7 +30,7 @@ class GraphenePrometheusAfterMiddleware(middleware.PrometheusAfterMiddleware):
 
 class GrapheneMetricDjangoFilterConnectionField(DjangoFilterConnectionField):
 
-	def metric_name(self, metric_suffix:str): -> str
+	def metric_name(self, metric_suffix):
 		model_name = self.model.__class__.__name__.split(".")[-1] 
 		return model_name + metric_suffix
 
