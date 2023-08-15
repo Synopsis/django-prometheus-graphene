@@ -65,16 +65,29 @@ class GrapheneMetricDjangoFilterConnectionField(DjangoFilterConnectionField):
 
 		GrapheneMetrics.get_instance().register_graphene_metric(Histogram, metric_name, f"Total count of { metric_name } Resolved", namespace=NAMESPACE)
 
+	def get_queryset_resolver(self):
+		metric_name = GrapheneMetricDjangoFilterConnectionField.metric_name(self.filterset_class, "_histogram")
 
-	@classmethod
-	def resolve_queryset(cls, connection, iterable, info, args, filtering_args, filterset_class):
-
-		metric_name = GrapheneMetricDjangoFilterConnectionField.metric_name(filterset_class, "_histogram")
-
-		result = super().resolve_queryset(connection, iterable, info, args, filtering_args, filterset_class)
-		print(filterset_class)
-
+        result = super().partial(
+            self.resolve_queryset,
+            filterset_class=self.filterset_class,
+            filtering_args=self.filtering_args,
+        )
 
 		GrapheneMetrics.get_instance().get_graphene_metric( metric_name ).observe( len(result) )
+		print("length of result:", len(result) )
 
 		return result
+
+	# @classmethod
+	# def resolve_queryset(cls, connection, iterable, info, args, filtering_args, filterset_class):
+
+	# 	metric_name = GrapheneMetricDjangoFilterConnectionField.metric_name(filterset_class, "_histogram")
+
+	# 	result = super().resolve_queryset(connection, iterable, info, args, filtering_args, filterset_class)
+	# 	print(filterset_class)
+
+
+	# 	GrapheneMetrics.get_instance().get_graphene_metric( metric_name ).observe( len(result) )
+
+	# 	return result
