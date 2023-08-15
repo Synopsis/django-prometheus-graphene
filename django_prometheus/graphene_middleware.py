@@ -1,5 +1,7 @@
 from django_prometheus import middleware
+from django_prometheus.conf import NAMESPACE
 from graphene_django.filter import DjangoFilterConnectionField
+from prometheus_client import Counter, Histogram
 
 """ This will hold arbtrary graphql resolvers by their resolver name while also grabbing existing metrics for Django."""
 class GrapheneMetrics(middleware.Metrics):
@@ -25,6 +27,8 @@ class GraphenePrometheusBeforeMiddleware(middleware.PrometheusBeforeMiddleware):
 ''' Overload the metrics class our middleware uses'''
 class GraphenePrometheusAfterMiddleware(middleware.PrometheusAfterMiddleware):
 	metrics_cls = GrapheneMetrics
+
+
 
 
 class GrapheneMetricDjangoFilterConnectionField(DjangoFilterConnectionField):
