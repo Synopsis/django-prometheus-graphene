@@ -5,6 +5,8 @@ from django_prometheus.conf import NAMESPACE, PROMETHEUS_LATENCY_BUCKETS
 from django_prometheus.utils import PowersOf, Time, TimeSince
 
 
+
+
 class Metrics:
     _instance = None
 
@@ -157,6 +159,7 @@ class Metrics:
             ["view"],
             namespace=NAMESPACE,
         )
+
 
 
 class PrometheusBeforeMiddleware(MiddlewareMixin):

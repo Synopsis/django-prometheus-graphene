@@ -8,7 +8,7 @@ https://github.com/korfuri/django-prometheus
 # objects right away.
 from django_prometheus import middleware, models
 
-__all__ = ["middleware", "models", "pip_prometheus"]
+__all__ = ["middleware", "graphene_middleware", "models", "pip_prometheus"]
 
 __version__ = "2.4.0.dev0"
 
