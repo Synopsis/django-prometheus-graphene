@@ -55,7 +55,9 @@ class GrapheneMetricDjangoFilterConnectionField(DjangoFilterConnectionField):
 			*args,
 			**kwargs)
 
-		GrapheneMetrics.get_instance().register_graphene_metric(Histogram, self.metric_name("_histogram"), f"Total count of { self.metric_name("_histogram") } Resolved", namespace=NAMESPACE)
+		metric_name = self.metric_name("_histogram")
+
+		GrapheneMetrics.get_instance().register_graphene_metric(Histogram, metric_name, f"Total count of { metric_name } Resolved", namespace=NAMESPACE)
 
 
 
