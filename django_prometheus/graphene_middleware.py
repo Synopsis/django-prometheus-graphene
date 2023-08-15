@@ -27,20 +27,35 @@ class GraphenePrometheusAfterMiddleware(middleware.PrometheusAfterMiddleware):
 	metrics_cls = GrapheneMetrics
 
 
-# class GrapheneMetricDjangoFilterConnectionField(DjangoFilterConnectionField):
+class GrapheneMetricDjangoFilterConnectionField(DjangoFilterConnectionField):
 
-# 	__init__
+	def __init__(
+	        self,
+	        type_,
+	        fields=None,
+	        order_by=None,
+	        extra_filter_meta=None,
+	        filterset_class=None,
+	        *args,
+	        **kwargs
+	    ):
+	     
+		super().__init__(
+			type_, 
+			fields=fields,
+			order_by=order_by,
+			extra_filter_meta=extra_filter_meta,
+			filterset_class=filterset_class, 
+			*args,
+			**kwargs)
 
-# 		for field in self.fields
-# 			# make new metrics for each field
-# 	 			 GrapheneMetrics.get_instance().register_graphene_metric(Histogram, fieldname, "Total count of VideoSegmentNode Resolved", namespace=NAMESPACE)
+		GrapheneMetrics.get_instance().register_graphene_metric(Histogram, str(self.model), f"Total count of {self.model} Resolved", namespace=NAMESPACE)
 
 
-# 	 def resolve_queryset(
-#         cls, connection, iterable, info, args, filtering_args, filterset_class
-#     ):
 
-# 	 	result = super.resolve_queryset(con)
+	def resolve_queryset(cls, connection, iterable, info, args, filtering_args, filterset_class):
+    	result = super().resolve_queryset(connection, iterable, info, args, filtering_args, filterset_class)
 
-# 	 	for field in self.fields:
-#             GrapheneMetrics.get_instance().get_graphene_metric("resolve_all_video_segments_count").observe( len(scoped_queryset) )
+        GrapheneMetrics.get_instance().get_graphene_metric( str(self.model) ).observe( len(result) )
+
+    	return result
