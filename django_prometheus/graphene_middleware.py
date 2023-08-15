@@ -25,3 +25,22 @@ class GraphenePrometheusBeforeMiddleware(middleware.PrometheusBeforeMiddleware):
 ''' Overload the metrics class our middleware uses'''
 class GraphenePrometheusAfterMiddleware(middleware.PrometheusAfterMiddleware):
 	metrics_cls = GrapheneMetrics
+
+
+# class GrapheneMetricDjangoFilterConnectionField(DjangoFilterConnectionField):
+
+# 	__init__
+
+# 		for field in self.fields
+# 			# make new metrics for each field
+# 	 			 GrapheneMetrics.get_instance().register_graphene_metric(Histogram, fieldname, "Total count of VideoSegmentNode Resolved", namespace=NAMESPACE)
+
+
+# 	 def resolve_queryset(
+#         cls, connection, iterable, info, args, filtering_args, filterset_class
+#     ):
+
+# 	 	result = super.resolve_queryset(con)
+
+# 	 	for field in self.fields:
+#             GrapheneMetrics.get_instance().get_graphene_metric("resolve_all_video_segments_count").observe( len(scoped_queryset) )
